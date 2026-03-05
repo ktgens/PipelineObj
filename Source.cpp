@@ -36,27 +36,28 @@ public:
 	template <class F>
 	void addStep(const std::string& name, F func)
 	{
-
+		if (name.empty())
+		{
+			throw std::invalid_argument("Error:Empty step name");
+		}
+		steps.push_back({ name, func });
 	}
 
 	void removeStep(size_t index)
 	{
-
 	}
 
 	T run(T value) const
 	{
-
 	}
 
 	std::vector<T> trace(T value) const
 	{
-
 	}
 
 	friend std::ostream& operator<<(std::ostream& stream, const MyPipeline& pipeline)
 	{
-		stream << "steps count: " << pipeline.size() << std::endl;
+		stream << "Steps: " << pipeline.size() << std::endl;
 		for (size_t i = 0; i < pipeline.steps.size(); i++)
 		{
 			stream << i << ") " << pipeline.steps[i].name << std::endl;
@@ -67,5 +68,9 @@ public:
 
 int main()
 {
+	MyPipeline<int> intPipe;
+	intPipe.addStep("add 5", [](int val) { return val + 5; });
+	intPipe.addStep("multiply 2", [](int val) { return val * 2; });
+	intPipe.addStep("square", [](int val) { return val*val; });
 
 }
