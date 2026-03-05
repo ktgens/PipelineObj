@@ -45,10 +45,21 @@ public:
 
 	void removeStep(size_t index)
 	{
+		if (index >= steps.size())
+		{
+			throw std::out_of_range("Index out of range");
+		}
+		steps.erase(steps.begin() + index);
 	}
 
 	T run(T value) const
 	{
+		T result = value;
+		for (size_t i = 0; i < steps.size(); i++)
+		{
+			result = steps[i].func(result);
+		}
+		return result;
 	}
 
 	std::vector<T> trace(T value) const
