@@ -64,6 +64,14 @@ public:
 
 	std::vector<T> trace(T value) const
 	{
+		std::vector<T> result;
+		T current = value;
+		for (size_t i = 0; i < steps.size(); i++)
+		{
+			current = steps[i].func(current);
+			result.push_back(current);
+		}
+		return result;
 	}
 
 	friend std::ostream& operator<<(std::ostream& stream, const MyPipeline& pipeline)
@@ -83,5 +91,16 @@ int main()
 	intPipe.addStep("add 5", [](int val) { return val + 5; });
 	intPipe.addStep("multiply 2", [](int val) { return val * 2; });
 	intPipe.addStep("square", [](int val) { return val*val; });
+
+	std::cout << intPipe << std::endl;
+
+	std::cout << intPipe.run(10) << std::endl;
+
+	auto traceRes = intPipe.trace(10);
+	for (const auto& elem : traceRes)
+	{
+		std::cout << elem << std::endl;
+	}
+	std::cout << std::endl;
 
 }
