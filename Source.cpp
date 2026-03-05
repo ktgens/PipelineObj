@@ -103,4 +103,24 @@ int main()
 	}
 	std::cout << std::endl;
 
+	MyPipeline<std::string> strPipe;
+	strPipe.addStep("sqrt", [](std::string val) {return "\\sqrt{" + val + "}";});
+	strPipe.addStep("mathInline", [](std::string val) {return "$" + val + "$";});
+	strPipe.addStep("duplicate", [](std::string val) {return val + val;});
+
+	std::cout << strPipe << std::endl;
+
+	std::cout << strPipe.run("some_math") << std::endl;
+
+	try
+	{
+		intPipe.removeStep(100);
+	}
+	catch (const std::out_of_range& e)
+	{
+		std::cout << e.what() << std::endl;
+	}
+
+	return 0;
+
 }
